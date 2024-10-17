@@ -159,8 +159,8 @@ namespace osmium {
         }
 
         void update(const osmium::Location& location) noexcept {
-            update_int32(location.x());
-            update_int32(location.y());
+            update_int64(location.x());
+            update_int64(location.y());
         }
 
         void update(const osmium::Box& box) noexcept {

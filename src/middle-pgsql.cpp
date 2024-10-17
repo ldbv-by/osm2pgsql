@@ -479,8 +479,8 @@ std::size_t middle_query_pgsql_t::get_way_node_locations_db(
     for (int i = 0; i < res.num_tuples(); ++i) {
         locs.emplace(osmium::string_to_object_id(res.get_value(i, 0)),
                      osmium::Location{
-                         (int)std::strtol(res.get_value(i, 1), nullptr, 10),
-                         (int)std::strtol(res.get_value(i, 2), nullptr, 10)});
+                         std::strtol(res.get_value(i, 1), nullptr, 10),
+                         std::strtol(res.get_value(i, 2), nullptr, 10)});
     }
 
     for (auto &n : *nodes) {
@@ -588,8 +588,8 @@ osmium::Location middle_query_pgsql_t::get_node_location_db(osmid_t id) const
         return osmium::Location{};
     }
 
-    return osmium::Location{(int)std::strtol(res.get_value(0, 1), nullptr, 10),
-                            (int)std::strtol(res.get_value(0, 2), nullptr, 10)};
+    return osmium::Location{std::strtol(res.get_value(0, 1), nullptr, 10),
+                            std::strtol(res.get_value(0, 2), nullptr, 10)};
 }
 
 osmium::Location

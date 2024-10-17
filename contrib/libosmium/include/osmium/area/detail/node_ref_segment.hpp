@@ -265,8 +265,8 @@ namespace osmium {
             }
 
             inline bool y_range_overlap(const NodeRefSegment& s1, const NodeRefSegment& s2) noexcept {
-                const std::pair<int32_t, int32_t> m1 = std::minmax(s1.first().location().y(), s1.second().location().y());
-                const std::pair<int32_t, int32_t> m2 = std::minmax(s2.first().location().y(), s2.second().location().y());
+                const std::pair<int64_t, int64_t> m1 = std::minmax(s1.first().location().y(), s1.second().location().y());
+                const std::pair<int64_t, int64_t> m2 = std::minmax(s2.first().location().y(), s2.second().location().y());
                 return !(m1.first > m2.second || m2.first > m1.second);
             }
 
@@ -329,7 +329,7 @@ namespace osmium {
                         (d < 0 && na <= 0 && na >= d && nb <= 0 && nb >= d)) {
                         const double ua = static_cast<double>(na) / static_cast<double>(d);
                         const vec i = p0 + ua * (p1 - p0);
-                        return osmium::Location{static_cast<int32_t>(i.x), static_cast<int32_t>(i.y)};
+                        return osmium::Location{static_cast<int64_t>(i.x), static_cast<int64_t>(i.y)};
                     }
 
                     return osmium::Location{};

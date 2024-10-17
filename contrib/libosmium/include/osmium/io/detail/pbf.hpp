@@ -69,7 +69,7 @@ namespace osmium {
 
             // resolution for longitude/latitude used for conversion
             // between representation as double and as int
-            const int64_t lonlat_resolution = 1000L * 1000L * 1000L;
+            const int64_t lonlat_resolution = 1000L * 1000L * 1000L * 1000L;
 
             const int64_t resolution_convert = lonlat_resolution / osmium::detail::coordinate_precision;
 

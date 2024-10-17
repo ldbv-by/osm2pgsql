@@ -313,12 +313,12 @@ namespace osmium {
                     } while (!keys.empty() && !vals.empty());
                 }
 
-                int32_t convert_pbf_lon(const int64_t c) const noexcept {
-                    return static_cast<int32_t>((c * m_granularity + m_lon_offset) / resolution_convert);
+                int64_t convert_pbf_lon(const int64_t c) const noexcept {
+                    return static_cast<int64_t>((c * m_granularity + m_lon_offset) / resolution_convert);
                 }
 
-                int32_t convert_pbf_lat(const int64_t c) const noexcept {
-                    return static_cast<int32_t>((c * m_granularity + m_lat_offset) / resolution_convert);
+                int64_t convert_pbf_lat(const int64_t c) const noexcept {
+                    return static_cast<int64_t>((c * m_granularity + m_lat_offset) / resolution_convert);
                 }
 
                 void decode_node(const data_view& data) {

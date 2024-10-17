@@ -65,12 +65,12 @@ namespace osmium {
     namespace detail {
 
         enum {
-            coordinate_precision = 10000000
+            coordinate_precision = 10000000000
         };
 
         // Convert string with a floating point number into integer suitable
         // for use as coordinate in a Location.
-        inline int32_t string_to_location_coordinate(const char** data) {
+        inline int64_t string_to_location_coordinate(const char** data) {
             const char* str = *data;
             const char* full = str;
 
@@ -78,10 +78,10 @@ namespace osmium {
             int sign = 1;
 
             // one more than significant digits to allow rounding
-            int64_t scale = 8;
+            int64_t scale = 11;
 
             // paranoia check for maximum number of digits
-            int max_digits = 10;
+            int max_digits = 13;
 
             // optional minus sign
             if (*str == '-') {
@@ -185,21 +185,21 @@ namespace osmium {
 
             result = (result + 5) / 10 * sign;
 
-            if (result > std::numeric_limits<int32_t>::max() ||
-                result < std::numeric_limits<int32_t>::min()) {
+            if (result > std::numeric_limits<int64_t>::max() ||
+                result < std::numeric_limits<int64_t>::min()) {
                 throw invalid_location{std::string{"wrong format for coordinate: '"} + full + "'"};
             }
 
             *data = str;
-            return static_cast<int32_t>(result);
+            return static_cast<int64_t>(result);
         }
 
         // Convert integer as used by location for coordinates into a string.
         template <typename T>
-        inline T append_location_coordinate_to_string(T iterator, int32_t value) {
+        inline T append_location_coordinate_to_string(T iterator, int64_t value) {
             // need to special-case this, because later `value = -value` would overflow.
-            if (value == std::numeric_limits<int32_t>::min()) {
-                static const char minresult[] = "-214.7483648";
+            if (value == std::numeric_limits<int64_t>::min()) {
+                static const char minresult[] = "-214.7483648123";
                 return std::copy_n(minresult, sizeof(minresult) - 1, iterator);
             }
 
@@ -210,7 +210,7 @@ namespace osmium {
             }
 
             // write digits into temporary buffer
-            int32_t v = value;
+            int64_t v = value;
             char temp[10];
             char* t = temp;
             do {
@@ -270,8 +270,8 @@ namespace osmium {
      */
     class Location {
 
-        int32_t m_x; // NOLINT(modernize-use-default-member-init)
-        int32_t m_y; // NOLINT(modernize-use-default-member-init)
+        int64_t m_x; // NOLINT(modernize-use-default-member-init)
+        int64_t m_y; // NOLINT(modernize-use-default-member-init)
 
         constexpr static double precision() noexcept {
             return static_cast<double>(detail::coordinate_precision);
@@ -284,14 +284,14 @@ namespace osmium {
         // constexpr, so we hard code this for the time being.
         // undefined_coordinate = std::numeric_limits<int32_t>::max();
         enum {
-            undefined_coordinate = 2147483647
+            undefined_coordinate = 2147483647123
         };
 
-        static int32_t double_to_fix(const double c) noexcept {
-            return static_cast<int32_t>(std::round(c * precision()));
+        static int64_t double_to_fix(const double c) noexcept {
+            return static_cast<int64_t>(std::round(c * precision()));
         }
 
-        static constexpr double fix_to_double(const int32_t c) noexcept {
+        static constexpr double fix_to_double(const int64_t c) noexcept {
             return static_cast<double>(c) / precision();
         }
 
@@ -308,19 +308,9 @@ namespace osmium {
          * Note that these coordinates are coordinate_precision
          * times larger than the real coordinates.
          */
-        constexpr Location(const int32_t x, const int32_t y) noexcept :
+        constexpr Location(const int64_t x, const int64_t y) noexcept :
             m_x(x),
             m_y(y) {
-        }
-
-        /**
-         * Create Location with given x and y coordinates.
-         * Note that these coordinates are coordinate_precision
-         * times larger than the real coordinates.
-         */
-        constexpr Location(const int64_t x, const int64_t y) noexcept :
-            m_x(static_cast<int32_t>(x)),
-            m_y(static_cast<int32_t>(y)) {
         }
 
         /**
@@ -374,20 +364,20 @@ namespace osmium {
             return m_x == undefined_coordinate && m_y == undefined_coordinate;
         }
 
-        constexpr int32_t x() const noexcept {
+        constexpr int64_t x() const noexcept {
             return m_x;
         }
 
-        constexpr int32_t y() const noexcept {
+        constexpr int64_t y() const noexcept {
             return m_y;
         }
 
-        Location& set_x(const int32_t x) noexcept {
+        Location& set_x(const int64_t x) noexcept {
             m_x = x;
             return *this;
         }
 
-        Location& set_y(const int32_t y) noexcept {
+        Location& set_y(const int64_t y) noexcept {
             m_y = y;
             return *this;
         }
@@ -538,7 +528,7 @@ namespace osmium {
 
         template <int N>
         inline size_t hash(const osmium::Location& location) noexcept {
-            return static_cast<uint32_t>(location.x()) ^ static_cast<uint32_t>(location.y());
+            return static_cast<uint64_t>(location.x()) ^ static_cast<uint64_t>(location.y());
         }
 
         template <>

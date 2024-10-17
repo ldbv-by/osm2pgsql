@@ -114,14 +114,14 @@ namespace osmium {
         /**
          * Get internal x value of the location in this NodeRef.
          */
-        constexpr int32_t x() const noexcept {
+        constexpr int64_t x() const noexcept {
             return m_location.x();
         }
 
         /**
          * Get internal y value of the location in this NodeRef.
          */
-        constexpr int32_t y() const noexcept {
+        constexpr int64_t y() const noexcept {
             return m_location.y();
         }
 
