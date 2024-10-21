@@ -1179,8 +1179,8 @@ table_sql sql_for_nodes(middle_pgsql_options const &options)
         sql.create_table =
             "CREATE {unlogged} TABLE {schema}\"{prefix}_nodes\" ("
             " id int8 PRIMARY KEY {using_tablespace},"
-            " lat int4 NOT NULL,"
-            " lon int4 NOT NULL,"
+            " lat int8 NOT NULL,"
+            " lon int8 NOT NULL,"
             "{attribute_columns_definition}"
             " tags jsonb"
             ") {data_tablespace}";

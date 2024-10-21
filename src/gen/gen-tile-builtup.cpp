@@ -115,8 +115,8 @@ gen_tile_builtup_t::gen_tile_builtup_t(pg_conn_t *connection, bool append,
 CREATE TABLE IF NOT EXISTS "{}" (
     id SERIAL PRIMARY KEY NOT NULL,
     zoom INT4,
-    x INT4,
-    y INT4,
+    x INT8,
+    y INT8,
     rast RASTER
 )
 )",

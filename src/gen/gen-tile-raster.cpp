@@ -105,8 +105,8 @@ gen_tile_raster_union_t::gen_tile_raster_union_t(pg_conn_t *connection,
 CREATE TABLE IF NOT EXISTS "{}" (
     type TEXT,
     zoom INT4,
-    x INT4,
-    y INT4,
+    x INT8,
+    y INT8,
     rast RASTER
 )
 )",
